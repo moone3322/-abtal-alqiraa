@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>أبطال القراءة | English Reading Stars</title>
+<style>
+:root{--purple:#6842a6;--deep:#43256f;--lav:#f1eaff;--gold:#f4bd45;--ink:#302344}
+*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:linear-gradient(135deg,#f8f4ff,#eee6ff);color:var(--ink)}
+header{background:linear-gradient(120deg,#56318d,#8b68c5);color:white;text-align:center;padding:28px 16px 34px;border-radius:0 0 32px 32px;box-shadow:0 8px 25px #52327b30}
+.school{font-size:15px;opacity:.95}.logo{font-size:40px;margin:8px}.title{font-size:clamp(27px,5vw,40px);font-weight:800;margin:5px}.english{font-size:20px;letter-spacing:.5px}.tag{margin:10px auto 0;max-width:650px;line-height:1.8}
+main{max-width:1000px;margin:24px auto;padding:0 14px}.panel{background:white;border-radius:22px;padding:22px;margin:16px 0;box-shadow:0 8px 28px #54337b12}
+h2{color:var(--deep);margin:0 0 12px}.intro{line-height:1.9}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+input{font:inherit;padding:13px;border:1px solid #d9ccec;border-radius:12px;min-width:210px;flex:1}
+button{font:inherit;border:0;border-radius:12px;padding:12px 17px;background:var(--purple);color:white;cursor:pointer;font-weight:700}
+button.secondary{background:var(--lav);color:var(--deep)}button.gold{background:#fff2ce;color:#76520b}button:disabled{opacity:.45;cursor:not-allowed}
+.status{font-size:14px;color:#5e4c72;margin-top:9px}.stats{display:flex;gap:12px;flex-wrap:wrap}.stat{background:var(--lav);border-radius:14px;padding:12px 18px;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:13px}.story-card{border:1px solid #eadff8;border-radius:17px;padding:16px;background:#fdfbff}.story-card h3{margin:0 0 8px;color:var(--deep)}.story-card p{line-height:1.7;color:#655775;min-height:48px}.story-card .done{color:#258451;font-weight:bold}
+#storyArea{display:none}.story-text{direction:ltr;text-align:left;background:#faf7ff;border-radius:15px;padding:18px;line-height:2;font-size:19px;white-space:pre-line}
+.word{display:inline-block;background:#f0e8ff;padding:2px 6px;border-radius:7px;margin:2px}
+.question{padding:12px 0;border-bottom:1px solid #eee}.question label{display:block;margin:7px 0;direction:ltr;text-align:left}
+footer{text-align:center;padding:25px 12px 35px;color:#655775;line-height:2;font-size:14px}
+.small{font-size:13px;color:#756786}.star{color:#d99a13;font-size:22px}
+@media(max-width:560px){.panel{padding:17px}.row button{flex:1}.story-text{font-size:17px}}
+</style></head>
+<body>
+<header>
+ <div class="school">مدرسة نسيبة بنت الحارث للطفولة المبكرة</div>
+ <div class="logo">🌟📚</div><div class="title">أبطال القراءة</div><div class="english">English Reading Stars</div>
+ <div class="tag">رحلتك الممتعة نحو القراءة باللغة الإنجليزية<br>اقرأ القصة، استمع إلى نطقها، تعلّم كلمات جديدة، ثم أجب عن الأسئلة وسجّل قراءتك.<br><b>الصف الثالث الابتدائي</b></div>
+</header>
+<main>
+<section class="panel">
+ <h2>👋 أهلًا يا بطل القراءة!</h2>
+ <p class="intro">أدخل اسمك واحفظه للبدء في رحلة القراءة. اجمع النجوم مع كل قصة تكملها!</p>
+ <div class="row"><input id="studentName" placeholder="أدخل اسمك للبدء" maxlength="50"><button id="saveName">حفظ الاسم</button></div>
+ <div id="nameStatus" class="status">يُحفظ الاسم والإنجازات على هذا الجهاز.</div>
+</section>
+<section class="panel">
+ <h2>🏆 إنجازاتي</h2><div class="stats"><div class="stat">⭐ النجوم: <span id="stars">0</span></div><div class="stat">📖 القصص المكتملة: <span id="completed">0</span> / 6</div></div>
+ <p class="small">أكملي القصة والأسئلة لتحصلي على نجمة.</p>
+</section>
+<section class="panel">
+ <h2>📚 اختاري قصتك</h2><div class="grid" id="storyList"></div>
+</section>
+<section class="panel" id="storyArea">
+ <div class="row" style="justify-content:space-between"><h2 id="storyTitle">القصة</h2><button class="secondary" id="back">كل القصص</button></div>
+ <div class="story-text" id="storyText"></div>
+ <div class="row" style="margin-top:14px"><button id="listen">🔊 استمع إلى القصة</button><button class="secondary" id="stopVoice">إيقاف الصوت</button></div>
+ <h3 style="color:var(--deep);margin-top:22px">✨ كلمات جديدة</h3><div id="vocab" class="row"></div>
+ <h3 style="color:var(--deep);margin-top:22px">✏️ أجيبي عن الأسئلة</h3><div id="quiz"></div>
+ <div class="row" style="margin-top:15px"><button id="checkQuiz">تحقق من الإجابات</button><span id="quizResult" class="status"></span></div>
+ <h3 style="color:var(--deep);margin-top:22px">🎙️ سجّلي قراءتك</h3>
+ <p class="small">اضغطي تسجيل، اقرئي القصة بصوت واضح، ثم أوقفي التسجيل للاستماع إليه أو حفظه على جهازك.</p>
+ <div class="row"><button id="record">● بدء التسجيل</button><button class="secondary" id="stopRecord" disabled>إيقاف التسجيل</button><button class="secondary" id="playRecord" disabled>▶ الاستماع للتسجيل</button><button class="gold" id="downloadRecord" disabled>⬇ حفظ التسجيل</button></div>
+ <div id="recordStatus" class="status" aria-live="polite"></div><audio id="audioPlayback" controls style="width:100%;margin-top:10px;display:none"></audio>
+</section>
+</main>
+<footer>
+ <div>إعداد المعلمة: أ. منال الزامل</div><div>مديرة المدرسة: أ. الجازي البدراني</div>
+ <div>مبادرة أبطال القراءة · مدرسة نسيبة بنت الحارث للطفولة المبكرة</div>
+</footer>
+<script>
+const stories=[
+{title:"The Little Cat",text:"Mimi is a little cat.\nShe lives in a small house.\nEvery morning, Mimi drinks milk.\nThen she plays in the garden.\nMimi is happy.",words:[["little","صغيرة"],["house","منزل"],["garden","حديقة"],["happy","سعيدة"]],q:[["What is Mimi?","A cat","A dog","A bird",0],["What does Mimi drink?","Water","Milk","Juice",1]]},
+{title:"My School",text:"I go to school every day.\nI meet my teacher and friends.\nI read books and write words.\nAt break time, I play with my friends.\nI love my school.",words:[["teacher","معلمة"],["friends","أصدقاء"],["books","كتب"],["break time","وقت الاستراحة"]],q:[["Where does the child go?","School","Park","Shop",0],["What does the child read?","Maps","Books","Letters",1]]},
+{title:"The Red Ball",text:"Tom has a red ball.\nHe plays with it in the park.\nHis sister joins him.\nThey throw the ball and laugh.\nPlaying together is fun.",words:[["ball","كرة"],["park","حديقة"],["sister","أخت"],["together","معًا"]],q:[["What color is the ball?","Blue","Green","Red",2],["Who plays with Tom?","His sister","His teacher","His friend",0]]},
+{title:"A Sunny Day",text:"Today is a sunny day.\nThe sky is blue.\nSara goes outside with her family.\nThey eat lunch under a tree.\nThey enjoy the warm weather.",words:[["sunny","مشمس"],["sky","سماء"],["outside","في الخارج"],["weather","طقس"]],q:[["What color is the sky?","Blue","Black","Pink",0],["Where do they eat lunch?","At school","Under a tree","At home",1]]},
+{title:"The Big Elephant",text:"An elephant lives in the forest.\nIt has big ears and a long trunk.\nIt likes to eat leaves and fruit.\nThe elephant walks slowly.\nIt is a gentle animal.",words:[["elephant","فيل"],["forest","غابة"],["trunk","خرطوم"],["leaves","أوراق"]],q:[["What does the elephant have?","Small wings","A long trunk","A short tail",1],["What does it eat?","Leaves and fruit","Fish","Bread",0]]},
+{title:"My Pet Fish",text:"I have a pet fish.\nIts name is Goldie.\nIt swims in a clean tank.\nI give it food every day.\nI love watching my fish swim.",words:[["pet","حيوان أليف"],["fish","سمكة"],["swims","يسبح"],["tank","حوض"]],q:[["What is the fish's name?","Mimi","Goldie","Tom",1],["Where does it swim?","In a tank","In a tree","In a river",0]]}
+];
+let current=-1,mediaRecorder=null,recordedBlob=null,recordUrl=null,stream=null,quizPassed=false;
+const $=id=>document.getElementById(id);
+function getData(){try{return JSON.parse(localStorage.getItem("readingStarsData")||'{"name":"","done":[]}')}catch(e){return {name:"",done:[]}}}
+function setData(d){localStorage.setItem("readingStarsData",JSON.stringify(d));renderStats()}
+function renderStats(){let d=getData();$("stars").textContent=d.done.length;$("completed").textContent=d.done.length}
+function saveName(){let n=$("studentName").value.trim();if(!n){$("nameStatus").textContent="اكتبي اسمك أولًا.";return}let d=getData();d.name=n;setData(d);$("nameStatus").textContent="أهلًا "+n+"! تم حفظ اسمك بنجاح 🌟"}
+$("saveName").onclick=saveName;
+function renderList(){let d=getData();$("storyList").innerHTML=stories.map((s,i)=>`<div class="story-card"><h3>${i+1}. ${s.title} ${d.done.includes(i)?'<span class="done">✓ مكتملة</span>':''}</h3><p>${s.text.split("\n")[0]}...</p><button onclick="openStory(${i})">${d.done.includes(i)?"مراجعة القصة":"ابدئي القراءة"}</button></div>`).join("");renderStats()}
+window.openStory=function(i){if(!getData().name){$("nameStatus").textContent="احفظي اسمك أولًا للبدء."; $("studentName").focus();return}current=i;quizPassed=false;let s=stories[i];$("storyTitle").textContent=s.title;$("storyText").textContent=s.text;$("vocab").innerHTML=s.words.map(w=>`<span class="word" dir="auto"><b>${w[0]}</b> — ${w[1]}</span>`).join("");$("quiz").innerHTML=s.q.map((q,j)=>`<div class="question"><b>${j+1}. ${q[0]}</b>${q.slice(1,4).map((a,k)=>`<label><input type="radio" name="q${j}" value="${k}" style="min-width:auto;flex:none"> ${a}</label>`).join("")}</div>`).join("");$("quizResult").textContent="";$("recordStatus").textContent="";$("audioPlayback").style.display="none";recordedBlob=null;$("playRecord").disabled=true;$("downloadRecord").disabled=true;$("storyArea").style.display="block";$("storyArea").scrollIntoView({behavior:"smooth"})};
+$("back").onclick=()=>{$("storyArea").style.display="none";speechSynthesis.cancel()};
+$("listen").onclick=()=>{speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(stories[current].text);u.lang="en-US";u.rate=.82;speechSynthesis.speak(u)};
+$("stopVoice").onclick=()=>speechSynthesis.cancel();
+$("checkQuiz").onclick=()=>{let s=stories[current],score=0;s.q.forEach((q,j)=>{let v=document.querySelector(`input[name="q${j}"]:checked`);if(v&&Number(v.value)===q[4])score++});if(score===s.q.length){quizPassed=true;let d=getData();if(!d.done.includes(current))d.done.push(current);setData(d);$("quizResult").textContent="أحسنتِ! إجابات صحيحة، حصلتِ على نجمة ⭐";renderList()}else{$("quizResult").textContent=`حاولي مرة أخرى. إجابات صحيحة: ${score} من ${s.q.length}.`}};
+$("record").onclick=async()=>{try{if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder)throw new Error("المتصفح لا يدعم التسجيل. افتحي الصفحة عبر رابط آمن HTTPS.");stream=await navigator.mediaDevices.getUserMedia({audio:true});let mime=MediaRecorder.isTypeSupported("audio/webm")?"audio/webm":"";mediaRecorder=new MediaRecorder(stream,mime?{mimeType:mime}:{});let chunks=[];mediaRecorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};mediaRecorder.onstop=()=>{recordedBlob=new Blob(chunks,{type:mediaRecorder.mimeType||"audio/webm"});if(recordUrl)URL.revokeObjectURL(recordUrl);recordUrl=URL.createObjectURL(recordedBlob);$("audioPlayback").src=recordUrl;$("audioPlayback").style.display="block";$("playRecord").disabled=false;$("downloadRecord").disabled=false;$("recordStatus").textContent="تم التسجيل! يمكنك الاستماع أو حفظ الملف على جهازك.";stream.getTracks().forEach(t=>t.stop())};mediaRecorder.start();$("record").disabled=true;$("stopRecord").disabled=false;$("recordStatus").textContent="جاري التسجيل... تحدثي الآن."}catch(e){$("recordStatus").textContent=e.message||"تعذر الوصول إلى الميكروفون. تحققي من إذن الميكروفون."}};
+$("stopRecord").onclick=()=>{if(mediaRecorder&&mediaRecorder.state!=="inactive"){mediaRecorder.stop();$("record").disabled=false;$("stopRecord").disabled=true}};
+$("playRecord").onclick=()=>{if(recordUrl)$("audioPlayback").play()};
+$("downloadRecord").onclick=()=>{if(!recordedBlob)return;let a=document.createElement("a");a.href=recordUrl;a.download=`${getData().name||"student"}-${stories[current].title.replaceAll(" ","-")}.webm`;a.click()};
+let initial=getData();if(initial.name)$("studentName").value=initial.name;renderList();
+</script></body></html>
